@@ -6,7 +6,7 @@ import userRouter from './routes/user.route.js';
 
 dotenv.config();
 
-// ✅ Corrected promise syntax
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
@@ -18,12 +18,22 @@ mongoose
 
 const app = express();
 
-// Example middleware for parsing JSON
+
 app.use(express.json());
 
 // Example routers
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
+app.use((err,req, res,next)=> {
+  const statusCode = err.statusCode|| 500;
+  const message= err.message || 'Internal Server Error';
+  return res.status(statusCode) .json({
+    success:false,
+    statusCode,
+    message,
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
