@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   cnic: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
     match: [/^\d{13}$/, 'CNIC must be a 13-digit number'],
   },
